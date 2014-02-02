@@ -1,0 +1,6 @@
+Here is the rewrite you need to run REST requests on nginx
+
+#Replaces HTACCESS rules in nginx rewrites
+#-------------------
+rewrite ^(.*) /index.php?$1;
+#-------------------
