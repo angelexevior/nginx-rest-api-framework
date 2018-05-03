@@ -3,7 +3,7 @@
  * API framework front controller.
  * 
  * @package api-framework
- * @author  Martin Bean <martin@martinbean.co.uk>
+ * @author  Angelos Hadjiphilippou <angelos@exevior.com>
  */
 
 /**
