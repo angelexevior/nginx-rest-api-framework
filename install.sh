@@ -7,7 +7,7 @@
 set -uo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CONFIG_FILE="$ROOT_DIR/beepconfig.php"
+CONFIG_FILE="$ROOT_DIR/config.php"
 SQL_FILE="$ROOT_DIR/countries.sql"
 
 # ---------------------------------------------------------------------------
@@ -161,11 +161,11 @@ while true; do
     fi
 done
 
-# Write beepconfig.php
+# Write config.php
 if [ -f "$CONFIG_FILE" ] && grep -q "db_hostname = '[^']" "$CONFIG_FILE" 2>/dev/null; then
-    warn "beepconfig.php already has non-empty credentials."
+    warn "config.php already has non-empty credentials."
     if ! confirm "Overwrite it?" n; then
-        info "Keeping existing beepconfig.php."
+        info "Keeping existing config.php."
     else
         cp "$CONFIG_FILE" "$CONFIG_FILE.bak.$(date +%s)"
         ok "Backed up existing config."
@@ -179,20 +179,24 @@ if [ "${WRITE_CONFIG:-0}" -eq 1 ]; then
     cat > "$CONFIG_FILE" <<PHP
 <?php
 
-class beepconfig {
+class Config {
 
     //Database configuration
     public \$db_hostname = '${DB_HOST}';
     public \$db_port = '${DB_PORT}';
     public \$db_username = '${DB_USER}';
     public \$db_password = '${DB_PASS}';
-    public \$beep_database = '${DB_NAME}';
+    public \$db_name = '${DB_NAME}';
+
+    //The time a session should be left alive (In seconds)
+    //This is for security reasons. Users will be automatically logged out after the specified seconds of inactivity
+    public \$session_timeout = '10800';
 
     //Time settings
     public \$timezone = 'UTC';
 }
 PHP
-    ok "Wrote beepconfig.php"
+    ok "Wrote config.php"
 fi
 
 # ---------------------------------------------------------------------------

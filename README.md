@@ -42,7 +42,7 @@ Run the interactive installer from the project root:
 ./install.sh
 ```
 
-It checks prerequisites, configures `beepconfig.php`, imports `countries.sql`,
+It checks prerequisites, configures `config.php`, imports `countries.sql`,
 and (optionally) writes and enables an nginx or Apache vhost for you. It
 never overwrites files or reloads a web server without asking first.
 
@@ -50,7 +50,7 @@ never overwrites files or reloads a web server without asking first.
 
 1. Deploy the files to your web server.
 2. Import `countries.sql` into your database.
-3. Edit `beepconfig.php` and provide your database credentials.
+3. Edit `config.php` and provide your database credentials.
 4. Point your web server rewrite rules at `index.php`:
    - **nginx**: see `nginx-config.txt`
    - **Apache**: `.htaccess` is included

@@ -8,12 +8,12 @@ class Beep {
     public $config;
 
     function __construct() {
-        if (file_exists('beepconfig.php')) {
-            include_once('beepconfig.php');
+        if (file_exists('config.php')) {
+            include_once('config.php');
         } else {
-            include_once('../beepconfig.php');
+            include_once('../config.php');
         }
-        $this->config = new beepconfig();
+        $this->config = new Config();
     }
 
     public function connect_to_database() {
