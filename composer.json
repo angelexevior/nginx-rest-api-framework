@@ -1,0 +1,23 @@
+{
+    "name": "angelexevior/nginx-rest-api-framework",
+    "description": "A minimal, dependency-free REST API framework in PHP for nginx/Apache.",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.4",
+        "ext-mysqli": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6 || ^10.5"
+    },
+    "autoload-dev": {
+        "classmap": [
+            "models/",
+            "controllers/",
+            "library/classes/"
+        ]
+    },
+    "scripts": {
+        "test": "phpunit --testdox tests"
+    }
+}

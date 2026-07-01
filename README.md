@@ -1,5 +1,9 @@
 # nginx-rest-api-framework
 
+[![CI](https://github.com/angelexevior/nginx-rest-api-framework/actions/workflows/ci.yml/badge.svg)](https://github.com/angelexevior/nginx-rest-api-framework/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![PHP](https://img.shields.io/badge/PHP-7.4%2B-777bb4.svg)](composer.json)
+
 A minimal, dependency-free REST API framework in PHP. It maps URLs like
 `/[resource]/[id]` to a controller class and returns a consistent JSON
 envelope, without requiring any external packages.
@@ -91,7 +95,26 @@ models/                      Framework request/response classes
 library/classes/Beep.php     Database connection helper
 library/classes/Country.php  Sample data-access class used by PlatformController
 countries.sql                Sample dataset for the /platform/countries endpoint
+tests/                       PHPUnit test suite
 ```
+
+## Testing
+
+```
+composer install
+composer test
+```
+
+CI runs the same suite (plus `php -l` linting) against PHP 7.4, 8.1 and 8.3
+on every push and pull request.
+
+## Contributing
+
+Contributions are welcome - see [CONTRIBUTING.md](CONTRIBUTING.md) for how
+to get set up and run the checks locally. Please also review the
+[Code of Conduct](CODE_OF_CONDUCT.md).
+
+See [CHANGELOG.md](CHANGELOG.md) for release history.
 
 ## License
 

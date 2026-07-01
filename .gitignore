@@ -1,0 +1,15 @@
+# Local database credentials - never commit real values here
+/config.php.bak.*
+
+# Dependencies
+/vendor/
+
+# PHPUnit
+.phpunit.result.cache
+/build/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
