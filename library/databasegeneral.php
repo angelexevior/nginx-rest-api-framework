@@ -8,7 +8,8 @@ class mysqlDatabase {
 
     public function open_connection() {
         $config = new beepconfig();
-        $this->connection = mysqli_connect($config->db_hostname, $config->db_username, $config->db_password, $config->beep_database);
+        $port = !empty($config->db_port) ? (int) $config->db_port : 3306;
+        $this->connection = mysqli_connect($config->db_hostname, $config->db_username, $config->db_password, $config->beep_database, $port);
         if (!$this->connection) {
             die('Database connection failed: ' . mysqli_connect_error());
         }

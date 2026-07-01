@@ -34,6 +34,20 @@ envelope, without requiring any external packages.
 
 ## Installation
 
+### Quick start
+
+Run the interactive installer from the project root:
+
+```
+./install.sh
+```
+
+It checks prerequisites, configures `beepconfig.php`, imports `countries.sql`,
+and (optionally) writes and enables an nginx or Apache vhost for you. It
+never overwrites files or reloads a web server without asking first.
+
+### Manual steps
+
 1. Deploy the files to your web server.
 2. Import `countries.sql` into your database.
 3. Edit `beepconfig.php` and provide your database credentials.

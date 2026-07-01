@@ -4,6 +4,7 @@ class beepconfig {
 
     //Database configuration
     public $db_hostname = '';
+    public $db_port = '3306';
     public $db_username = '';
     public $db_password = '';
     public $beep_database = '';
