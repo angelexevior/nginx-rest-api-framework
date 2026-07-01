@@ -29,7 +29,9 @@ class ResponseJson {
      */
     public function render() {
         global $request;
-        header('Content-Type: application/json');
+        if (!headers_sent()) {
+            header('Content-Type: application/json');
+        }
 
         // Unwrap single-item result arrays, e.g. [0 => [...]] becomes [...]
         if (isset($this->data[0]) && count($this->data) === 1) {
