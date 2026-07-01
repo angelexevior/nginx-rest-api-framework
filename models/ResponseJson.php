@@ -1,137 +1,74 @@
 <?php
-class ResponseJson
-{
+/**
+ * JSON response class.
+ *
+ * @package api-framework
+ */
+class ResponseJson {
+
     /**
      * Response data.
      *
-     * @var string
+     * @var mixed
      */
     protected $data;
-    
-    
+
     /**
      * Constructor.
      *
-     * @param string $data
+     * @param mixed $data
      */
-    public function __construct($data)
-    {
-        global $request;
+    public function __construct($data) {
         $this->data = $data;
-        if($request->url_elements[0] != "platform"){
-                    if(isset($this->data[0])){
-            if(count($this->data) == 1){
-                $this->data = $this->data[0];
-            } else {
-                $this->data = $this->data;
-                
-            }
-        } 
-        }
-
-        
-        //$this->data->data = $data;
-        
-        return $this;
     }
-    
+
     /**
      * Render the response as JSON.
-     * 
+     *
      * @return string
      */
-    public function render()
-    {
+    public function render() {
         global $request;
         header('Content-Type: application/json');
-        //Last check to remove single array being child to [0]
-        
-        //print_r($this->data);
-        if(isset($this->data[0])){
-            if(count($this->data) == 1){
-                $data = $this->data[0];
-            } else {
-                $data = $this->data;
-                
-            }
+
+        // Unwrap single-item result arrays, e.g. [0 => [...]] becomes [...]
+        if (isset($this->data[0]) && count($this->data) === 1) {
+            $data = $this->data[0];
         } else {
             $data = $this->data;
-            
         }
-        //print_r($data);
-        $finaldata = $this->buildFinalData($data);
-        
-        //print_r($finaldata);
-        $response = json_encode($finaldata);
 
-        return $response;
+        return json_encode($this->buildFinalData($data, $request));
     }
-    
-    public function buildFinalData($data){
-        global $request;
-        
-        $controller = $this->buildControllerData($request);
-        $error = $this->errorHandler($this->data);
-        $success = $this->successHandler($error);
-    
-        $finaldata = array();
-        //Kept for backwards compatibility
-        //$finaldata = $data;
-        //Added for generic responses V2.0
-        $finaldata['success'] = $success;
-        $finaldata['request'] = $controller;
-        $finaldata['error'] = $error;
-        $finaldata['data'] = $this->data;
-        //print_r($finaldata);
-        return $finaldata;
+
+    protected function buildFinalData($data, $request) {
+        $error = $this->errorHandler($data);
+
+        return array(
+            'success' => $error['errorid'] === 0,
+            'request' => $this->buildControllerData($request),
+            'error' => $error,
+            'data' => $data,
+        );
     }
-    
-    public function buildControllerData($request){
-        $controller = array();
-        $controller['method'] = $request->method;
-        $controller['controller'] = $request->url_elements[0];
-        if(isset($request->url_elements[1])){
-            $controller['resource'] = $request->url_elements[1];
-        } else {
-            $controller['resource'] = null;
+
+    protected function buildControllerData($request) {
+        return array(
+            'method' => $request->method,
+            'controller' => $request->url_elements[0],
+            'resource' => isset($request->url_elements[1]) ? $request->url_elements[1] : null,
+            'parameters' => $request->parameters,
+            'url_elements' => $request->url_elements,
+        );
+    }
+
+    protected function errorHandler($data) {
+        if (isset($data['error'])) {
+            return array(
+                'errorid' => isset($data['errorid']) ? $data['errorid'] : 1000,
+                'message' => isset($data['errormsg']) ? $data['errormsg'] : $data['error'],
+            );
         }
-        $controller['parameters'] = key($request->parameters);
-        $controller['url_elements'] = $request->url_elements;
-        
-        //$controller['request'] = $request;
-        //print_r($request);die;
-        return $controller;
-    }
-    
-    public function errorHandler($data){
-        //print_r($data);die;
-        $error = array();
-        if(isset($data['error'])){
-            //Backwards compatible error reporting
-            if(isset($data['errorid'])){
-                $error['message'] = $data['errormsg'];
-                $error['errorid'] = $data['errorid'];
-            } else {
-                $error['errorid'] = 1000;
-                $error['message'] = $data['error'];
-            }
-            
-        } else {
-            $error['errorid'] = 0;
-            $error['message'] = 0;
-        }
-        //print_r($error);
-        
-        return $error;
-    }
-    
-    public function successHandler($error){
-        //print_r($error);die;
-        if($error['errorid']){
-            $success = false;
-        } else {
-            $success = true;
-        }
-        return $success;
+        return array('errorid' => 0, 'message' => null);
     }
 }
